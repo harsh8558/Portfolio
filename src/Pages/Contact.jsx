@@ -109,10 +109,10 @@ const ContactPage = () => {
       </div>
 
       <div
-        className="h-auto py-10 flex items-center justify-center px-[5%] md:px-0"
+        className="h-auto py-10 flex items-center justify-center px-[5%] "
         id="Contact"
       >
-        <div className="container px-[1%] grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-[45%_55%] 2xl:grid-cols-[35%_65%] gap-12">
+        <div className="container px-[1%] md:px-[7.5%] grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-[45%_55%] 2xl:grid-cols-[35%_65%] gap-12">
           <div
             data-aos="fade-right"
             data-aos-duration="1200"
@@ -131,7 +131,7 @@ const ContactPage = () => {
             </div>
 
             <form 
-              action="https://formsubmit.co/ekizulfarrachman@gmail.com"
+              action="https://formsubmit.co/hkg8558@gmail.com"
               method="POST"
               onSubmit={handleSubmit}
               className="space-y-6"
