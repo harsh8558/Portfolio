@@ -146,7 +146,7 @@ const Home = () => {
     src: "https://lottie.host/58753882-bb6a-49f5-a2c0-950eda1e135a/NLbpVqGegK.lottie",
     loop: true,
     autoplay: true,
-    rendererSettings: {
+    renderersettings: {
       preserveAspectRatio: 'xMidYMid slice',
       progressiveLoad: true,
     },

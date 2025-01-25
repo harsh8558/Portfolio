@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { db, collection } from "../firebase";
 import { getDocs } from "firebase/firestore";
 import PropTypes from "prop-types";
-import SwipeableViews from "react-swipeable-views";
+//import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
@@ -80,7 +80,7 @@ function TabPanel({ children, value, index, ...other }) {
     >
       {value === index && (
         <Box sx={{ p: { xs: 1, sm: 3 } }}>
-          <Typography>{children}</Typography>
+          <Typography component="div">{children}</Typography>
         </Box>
       )}
     </div>
@@ -161,6 +161,41 @@ export default function FullWidthTabs() {
     }
   }, []);
 
+  // const fetchData = useCallback(async () => {
+  //   try {
+  //     console.log('Fetching data...');
+  //     const projectCollection = collection(db, "projects");
+  //     const certificateCollection = collection(db, "certificates");
+
+  //     const [projectSnapshot, certificateSnapshot] = await Promise.all([
+  //       getDocs(projectCollection),
+  //       getDocs(certificateCollection),
+  //     ]);
+
+  //     console.log('Project snapshot:', projectSnapshot);
+  //     console.log('Certificate snapshot:', certificateSnapshot);
+
+  //     const projectData = projectSnapshot.docs.map((doc) => ({
+  //       id: doc.id,
+  //       ...doc.data(),
+  //       TechStack: doc.data().TechStack || [],
+  //     }));
+
+  //     const certificateData = certificateSnapshot.docs.map((doc) => doc.data());
+
+  //     console.log('Processed project data:', projectData);
+  //     console.log('Processed certificate data:', certificateData);
+
+  //     setProjects(projectData);
+  //     setCertificates(certificateData);
+
+  //     // Store in localStorage
+  //     localStorage.setItem("projects", JSON.stringify(projectData));
+  //     localStorage.setItem("certificates", JSON.stringify(certificateData));
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // }, []);
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -233,6 +268,8 @@ export default function FullWidthTabs() {
             textColor="secondary"
             indicatorColor="secondary"
             variant="fullWidth"
+            scrollButtons="auto"
+            allowScrollButtonsMobile
             sx={{
               // Existing styles remain unchanged
               minHeight: "70px",
@@ -289,7 +326,7 @@ export default function FullWidthTabs() {
           </Tabs>
         </AppBar>
 
-        <SwipeableViews
+        {/* <SwipeableViews
           axis={theme.direction === "rtl" ? "x-reverse" : "x"}
           index={value}
           onChangeIndex={setValue}
@@ -363,7 +400,77 @@ export default function FullWidthTabs() {
               </div>
             </div>
           </TabPanel>
-        </SwipeableViews>
+        </SwipeableViews> */}
+        <Box sx={{ width: '100%' }}>
+          <TabPanel value={value} index={0} dir={theme.direction}>
+            <div className="container mx-auto flex justify-center items-center overflow-hidden">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-5">
+                {Array.isArray(displayedProjects) && displayedProjects.map((project, index) => (
+                  <div
+                  key={project.id || index}
+                  data-aos={index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"}
+                  data-aos-duration={index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"}
+                  >
+                    <CardProject 
+                      key={project.id} 
+                      Img={project.Img}
+                      Title={project.Title}
+                      Description={project.Description}
+                      Link={project.Link}
+                      id={project.id} 
+                      index={index} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            {projects.length > initialItems && (
+              <div className="flex justify-center mt-8">
+                <ToggleButton
+                  onClick={() => toggleShowMore('projects')}
+                  isShowingMore={showAllProjects}
+                />
+              </div>
+            )}
+          </TabPanel>
+          <TabPanel value={value} index={1} dir={theme.direction}>
+            <div className="container mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {Array.isArray(displayedCertificates) && displayedCertificates.map((certificate, index) => (
+                  <div
+                  key={certificate.id || index}
+                  data-aos={index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"}
+                  data-aos-duration={index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"}
+                  >
+                    <Certificate ImgSertif={certificate.Img} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            {certificates.length > initialItems && (
+              <div className="flex justify-center mt-8">
+                <ToggleButton
+                  onClick={() => toggleShowMore('certificates')}
+                  isShowingMore={showAllCertificates}
+                />
+              </div>
+            )}
+          </TabPanel>
+          <TabPanel value={value} index={2} dir={theme.direction}>
+            <div className="container mx-auto">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {techStacks.map((tech, index) => (
+                  <div
+                  key={index}
+                  data-aos={index % 3 === 0 ? "fade-up-right" : index % 3 === 1 ? "fade-up" : "fade-up-left"}
+                  data-aos-duration={index % 3 === 0 ? "1000" : index % 3 === 1 ? "1200" : "1000"}
+                  >
+                    <TechStackIcon TechStackIcon={tech.icon} Language={tech.language} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </TabPanel>
+        </Box>
       </Box>
     </div>
   );
