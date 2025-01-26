@@ -82,7 +82,7 @@ const TECH_STACK = ["React", "Javascript", "Node.js", "MERN","Tailwind"];
 const SOCIAL_LINKS = [
   { icon: Github, link: "https://github.com/harsh8558" },
   { icon: Linkedin, link: "https://www.linkedin.com/in/harsh-gupta85/" },
-  { icon: Instagram, link: "https://www.instagram.com/ekizr_/?hl=id" }
+  { icon: Instagram, link: "https://www.instagram.com/harsh_8.5.5.8/" }
 ];
 
 const Home = () => {

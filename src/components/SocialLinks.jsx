@@ -23,7 +23,7 @@ const socialLinks = [
     displayName: "Instagram",
     subText: "harsh_8.5.5.8",
     icon: Instagram,
-    url: "https://www.instagram.com/ekizr_/?hl=id",
+    url: "https://www.instagram.com/harsh_8.5.5.8/",
     color: "#E4405F",
     gradient: "from-[#833AB4] via-[#E4405F] to-[#FCAF45]"
   },
