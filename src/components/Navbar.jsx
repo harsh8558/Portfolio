@@ -82,7 +82,7 @@ const Navbar = () => {
                     <a
                         href="#Home"
                         onClick={(e) => scrollToSection(e, "#Home")}
-                        className="text-3xl font-bold bg-gradient-to-r from-[#a855f7] to-[#6366f1] bg-clip-text text-transparent "
+                        className="md:text-3xl text-xl font-bold bg-gradient-to-r from-[#a855f7] to-[#6366f1] bg-clip-text text-transparent "
                     >
                         Harsh
                     </a>
@@ -139,7 +139,7 @@ const Navbar = () => {
     
         {/* Mobile Menu Overlay */}
         <div
-            className={`md:hidden h-2/5 fixed inset-0 bg-[#030014] transition-all duration-300 ease-in-out ${
+            className={`md:hidden h-1/2 fixed inset-0 bg-[#030014] transition-all duration-300 ease-in-out ${
                 isOpen
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-[-100%] pointer-events-none"

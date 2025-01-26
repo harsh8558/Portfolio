@@ -7,9 +7,9 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 const Comment = memo(({ comment, formatDate, index }) => (
+    
     <div 
         className="px-4 pt-4 pb-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all group hover:shadow-lg hover:-translate-y-0.5"
-        
     >
         <div className="flex items-start gap-3 ">
             {comment.profileImage ? (
@@ -69,6 +69,7 @@ const CommentForm = memo(({ onSubmit, isSubmitting, error }) => {
         if (!newComment.trim() || !userName.trim()) return;
         
         onSubmit({ newComment, userName, imageFile });
+        setUserName('')
         setNewComment('');
         setImagePreview(null);
         setImageFile(null);
@@ -197,7 +198,6 @@ const Komentar = () => {
     useEffect(() => {
         const commentsRef = collection(db, 'portfolio-comments');
         const q = query(commentsRef, orderBy('createdAt', 'desc'));
-        
         return onSnapshot(q, (querySnapshot) => {
             const commentsData = querySnapshot.docs.map((doc) => ({
                 id: doc.id,
@@ -207,11 +207,27 @@ const Komentar = () => {
         });
     }, []);
 
+    // const uploadImage = useCallback(async (imageFile) => {
+    //     if (!imageFile) return null;
+    //     const storageRef = ref(storage, `profile-images/${Date.now()}_${imageFile.name}`);
+    //     await uploadBytes(storageRef, imageFile);
+    //     return getDownloadURL(storageRef);
+    // }, []);
+
     const uploadImage = useCallback(async (imageFile) => {
         if (!imageFile) return null;
-        const storageRef = ref(storage, `profile-images/${Date.now()}_${imageFile.name}`);
-        await uploadBytes(storageRef, imageFile);
-        return getDownloadURL(storageRef);
+        try {
+            const metadata = {
+                contentType: imageFile.type,
+            };
+            const storageRef = ref(storage, `profile-images/${Date.now()}_${imageFile.name}`);
+            const uploadTask = await uploadBytes(storageRef, imageFile, metadata);
+            const downloadURL = await getDownloadURL(uploadTask.ref);
+            return downloadURL;
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            throw new Error('Failed to upload image. Please try again.');
+        }
     }, []);
 
     const handleCommentSubmit = useCallback(async ({ newComment, userName, imageFile }) => {
