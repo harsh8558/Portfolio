@@ -228,7 +228,7 @@ const AboutPage = () => {
 
             <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-4 lg:px-0 w-full">
               <a 
-                href="./HARSHCV.pdf" 
+                href="./Harsh-Resume.pdf" 
                 target="parent" 
                 rel="noopener noreferrer"
                 onClick={handleCVDownload}
