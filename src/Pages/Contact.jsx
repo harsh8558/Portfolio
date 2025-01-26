@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Share2, User, Mail, MessageSquare, Send } from "lucide-react";
+import { Share2, User, Mail, MessageSquare, Send, Phone } from "lucide-react";
+import emailjs from '@emailjs/browser';
 import { Link } from "react-router-dom";
 import SocialLinks from "../components/SocialLinks";
 import Komentar from "../components/Commentar";
@@ -10,6 +11,7 @@ import "aos/dist/aos.css";
 const ContactPage = () => {
   const [formData, setFormData] = useState({
     name: "",
+    phone: "",
     email: "",
     message: "",
   });
@@ -29,53 +31,100 @@ const ContactPage = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setIsSubmitting(true);
+
+  //   Swal.fire({
+  //     title: 'Sending Message...',
+  //     html: 'Please wait while we send your message',
+  //     allowOutsideClick: false,
+  //     didOpen: () => {
+  //       Swal.showLoading();
+  //     }
+  //   });
+
+  //   try {
+  //     // Get form data
+  //     const form = e.target;
+  //     const formData = new FormData(form);
+
+  //     // Submit form
+  //     await form.submit();
+
+  //     // Show success message
+  //     Swal.fire({
+  //       title: 'Success!',
+  //       text: 'Your message has been sent successfully!',
+  //       icon: 'success',
+  //       confirmButtonColor: '#6366f1',
+  //       timer: 2000,
+  //       timerProgressBar: true
+  //     });
+
+  //     // Reset form
+  //     setFormData({
+  //       name: "",
+  //       email: "",
+  //       message: "",
+  //     });
+  //   } catch (error) {
+  //     Swal.fire({
+  //       title: 'Error!',
+  //       text: 'Something went wrong. Please try again later.',
+  //       icon: 'error',
+  //       confirmButtonColor: '#6366f1'
+  //     });
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
     Swal.fire({
-      title: 'Sending Message...',
-      html: 'Please wait while we send your message',
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
-    });
-
-    try {
-      // Get form data
-      const form = e.target;
-      const formData = new FormData(form);
-
-      // Submit form
-      await form.submit();
-
-      // Show success message
-      Swal.fire({
-        title: 'Success!',
-        text: 'Your message has been sent successfully!',
-        icon: 'success',
-        confirmButtonColor: '#6366f1',
-        timer: 2000,
-        timerProgressBar: true
-      });
-
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        message: "",
-      });
-    } catch (error) {
-      Swal.fire({
-        title: 'Error!',
-        text: 'Something went wrong. Please try again later.',
-        icon: 'error',
-        confirmButtonColor: '#6366f1'
-      });
-    } finally {
+          title: 'Sending Message...',
+          html: 'Please wait while we send your message',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+    emailjs
+      .send(
+        "service_fcz0nnd", // Replace with your EmailJS service ID
+        "template_4wpduhl", // Replace with your EmailJS template ID
+        formData,
+        "sBlwT0PMZLc1gfpCa" // Replace with your EmailJS public key
+      )
+      .then(
+        () => {
+          Swal.fire({
+            title: 'Success!',
+            text: 'Your message has been sent successfully!',
+            icon: 'success',
+            confirmButtonColor: '#6366f1',
+            timer: 2000,
+            timerProgressBar: true
+          });
+          setFormData({
+            name: "",
+            phone: "",
+            email: "",
+            message: "",
+          }); // Reset form
+        },
+        (error) => {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Something went wrong. Please try again later.',
+            icon: 'error',
+            confirmButtonColor: '#6366f1'
+          });
+        }
+      );
       setIsSubmitting(false);
-    }
   };
 
   return (
@@ -131,7 +180,7 @@ const ContactPage = () => {
             </div>
 
             <form 
-              action="https://formsubmit.co/hkg8558@gmail.com"
+              //action="https://formsubmit.co/hkg8558@gmail.com"
               method="POST"
               onSubmit={handleSubmit}
               className="space-y-6"
@@ -159,6 +208,23 @@ const ContactPage = () => {
               </div>
               <div
                 data-aos="fade-up"
+                data-aos-delay="100"
+                className="relative group"
+              >
+                <Phone className="absolute left-4 top-4 w-5 h-5 text-gray-400 group-focus-within:text-[#6366f1] transition-colors" />
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Your Phone Number"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  disabled={isSubmitting}
+                  className="w-full p-4 pl-12 bg-white/10 rounded-xl border border-white/20 placeholder-gray-500 text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 transition-all duration-300 hover:border-[#6366f1]/30 disabled:opacity-50"
+                  required
+                />
+              </div>
+              <div
+                data-aos="fade-up"
                 data-aos-delay="200"
                 className="relative group"
               >
@@ -171,7 +237,6 @@ const ContactPage = () => {
                   onChange={handleChange}
                   disabled={isSubmitting}
                   className="w-full p-4 pl-12 bg-white/10 rounded-xl border border-white/20 placeholder-gray-500 text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 transition-all duration-300 hover:border-[#6366f1]/30 disabled:opacity-50"
-                  required
                 />
               </div>
               <div
